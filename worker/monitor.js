@@ -2,11 +2,16 @@ import { _has } from './helpers.js';
 import { PARSER } from './constants.js'
 
 class Monitor {
-  constructor(id, prop, value) {
+  #id;
+  #prop;
+  #value;
+  #deps;
+
+  constructor(id, prop, value, context) {
     this.#id = id;
     this.#prop = prop;
     this.#value = value;
-    this.#deps = parser.getDeps(value);
+    this.#deps = context.get()[PARSER].getDeps(value);
   }
 
   affected(changes) {
@@ -19,7 +24,7 @@ class Monitor {
   }
 
   evaluate(context) {
-    const value = context[PARSER].evaluate(this.#value, context);
+    const value = context.get()[PARSER].evaluate(this.#value, context);
 
     return [this.#id, this.#prop, value];
   }

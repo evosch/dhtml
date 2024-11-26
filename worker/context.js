@@ -1,7 +1,7 @@
 import { _set, _inflate } from './helpers.js';
 import Monitor from '././monitor.js';
 
-const STORE = new Symbol('reference for storage');
+const STORE = Symbol('reference for storage');
 
 class Context  {
   #state = {};
@@ -10,6 +10,10 @@ class Context  {
   
   constructor(initialState = {}){
     this.#state = initialState;
+  }
+
+  get() {
+    return this.#state;
   }
   
   register(name, attr) {
@@ -24,7 +28,7 @@ class Context  {
   }
   
   subscribe(id, prop, value) {
-    const monitor = new Monitor(id, prop, value);
+    const monitor = new Monitor(id, prop, value, this);
     this.#monitors.add(monitor);
     return monitor;
   }
@@ -50,7 +54,7 @@ class Context  {
     
     const changeObject = _inflate(changes);
     
-    postMessage(changeObject);
+    self.postMessage(changeObject);
     
     Object.entries(changeObject[STORE]).forEach(([k,v]) => {
       const { setStore } = this.getItem(k);

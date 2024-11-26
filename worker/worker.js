@@ -14,9 +14,9 @@ parser.register('ld', {
   evalFn: (p, context) => {
     return _get(context, p._sv);
   },
-  depsFn: (v) => {
-    v._sv = v.split('.')
-    return [v._sv];
+  depsFn: (source) => {
+    source._sv = source.value.split('.')
+    return [source._sv];
   }
 });
 
@@ -64,11 +64,14 @@ context.register('persist', {
   setStore: (context) => localStorage.setItem()
 });
 */
+
 let activeProcesses = 0;
-onmessage = async (event) => {
-  const { id, action, payload } = event.data;
+self.onmessage = async (event) => {
+  debugger;
+  console.log(event);
+  const { action, payload } = event.data;
   activeProcesses++;
-  await actions.evaluate(action, playload, context);
+  await actions.evaluate(action, payload, context);
   activeProcesses--;
   if (activeProcesses === 0) {
     context.flush();

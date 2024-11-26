@@ -1,1 +1,2 @@
-export const PARSER = new Symbol('parser')
+export const PARSER = Symbol('parser');
+export const ACTION = Symbol('action');

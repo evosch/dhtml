@@ -1,4 +1,4 @@
-const myWorker = new Worker("./worker/worker.js");
+const myWorker = new Worker("./worker/worker.js", { type: 'module' });
 
 myWorker.addEventListener('message', (data) => {
   console.log(data);
@@ -11,11 +11,11 @@ myWorker.addEventListener('message', (data) => {
         obj.setAttribute(k, props[k]);
         continue;
       }
-      if (typeof obj[prop] == 'function') {
-        obj[prop](props[prop]);
+      if (typeof obj[k] == 'function') {
+        obj[k](props[k]);
         continue;
       }
-      obj[prop] = props[prop];
+      obj[k] = props[k];
     }
   }
 })

@@ -1,7 +1,8 @@
 const myWorker = new Worker("./worker/worker.js", { type: 'module' });
 
-myWorker.addEventListener('message', (data) => {
-  console.log(data);
+myWorker.addEventListener('message', (event) => {
+  console.log(event);
+  const { data } = event;
   for (const id in data) {
     const obj = document.getElementById(id);
     if (!obj) { continue; }
@@ -27,7 +28,7 @@ myWorker.postMessage({
     props: {
       innerText: {
         parser: 'ld',
-        value: 'people.name'
+        value: 'people.data.name'
       }
     }
   }
@@ -36,7 +37,7 @@ myWorker.postMessage({
 myWorker.postMessage({
   action: 'query',
   payload: {
-    variableName: 'people',
+    variableName: ['people'],
     request: {
       url: 'https://swapi.dev/api/people/1/'
     }

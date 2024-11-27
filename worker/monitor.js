@@ -24,7 +24,7 @@ class Monitor {
   }
 
   evaluate(context) {
-    const value = context.get()[PARSER].evaluate(this.#value, context);
+    const value = context[PARSER].evaluate(this.#value, context);
 
     return [this.#id, this.#prop, value];
   }

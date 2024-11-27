@@ -36,8 +36,8 @@ actions.register('sequence', {
 });
 
 actions.register('query', {
-  evalFn: async ({ variableName, request }, context) => {
-    const requestObject = new Request(request);
+  evalFn: async ({ variableName, request: { url: requestUrl, ...requestOptions } }, context) => {
+    const requestObject = new Request(requestUrl, requestOptions);
     const response = await fetch(requestObject);
     response.data = await response.json();
     context.update(variableName, response);
@@ -67,8 +67,6 @@ context.register('persist', {
 
 let activeProcesses = 0;
 self.onmessage = async (event) => {
-  debugger;
-  console.log(event);
   const { action, payload } = event.data;
   activeProcesses++;
   await actions.evaluate(action, payload, context);

@@ -28,12 +28,12 @@ export function _set(object, path, value) {
     object[base] = {};
   }
 
-  value = path.length <= 1 ? value : _set(object[base], path.slice(1), value);
-
-  return {
-    ...object,
-      [base]: value,
+  if (path.length > 1) {
+    _set(object[base], path.slice(1), value);
+    return;
   }
+  
+  object[base] = value;
 }
 
 export function _inflate(arr) {
@@ -41,7 +41,7 @@ export function _inflate(arr) {
   for (const a of arr) {
     const path = a.slice(0, -1);
     const v = a.slice(-1);
-    r = _set(r, path, v);
+    _set(r, path, v);
   }
   return r;
 }

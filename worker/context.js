@@ -23,7 +23,7 @@ class Context  {
   }
   
   update(path, update) {
-    this.#state = _set(this.#state, path, update);
+    _set(this.#state, path, update);
     this.#observed.add(path);
   }
   
@@ -36,11 +36,22 @@ class Context  {
   unsubscribe(monitor) {
     return this.#monitors.delete(monitor);
   }
+
+  #store() {
+    if (!this.#state[STORE]) {
+      return;
+    }
+
+    Object.entries(this.#state[STORE]).forEach(([k, v]) => {
+      const { setStore } = this.#state[k];
+      setStore(this.#state);
+    });
+  }
   
   async flush() {
     const toEvaluate = new Set();
     for (const monitor of this.#monitors) {
-      if (monitor.affected(changes)) {
+      if (monitor.affected(this.#observed)) {
         toEvaluate.add(monitor);
       }
     }
@@ -49,17 +60,14 @@ class Context  {
     
     const changes = [];
     for (const parser of toEvaluate) {
-      changes = await parser.evaluate(state);
+      changes.push(await parser.evaluate(this.#state));
     }
     
     const changeObject = _inflate(changes);
     
     self.postMessage(changeObject);
     
-    Object.entries(changeObject[STORE]).forEach(([k,v]) => {
-      const { setStore } = this.getItem(k);
-      setStore(context);
-    });
+    this.#store();
   }
 }
 

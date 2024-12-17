@@ -38,12 +38,12 @@ class Context  {
   
   /**
   * subscribe to changes of a specific part of the context
-  * @params {string} id - ??
-  * @params {string[]} prop - ??
+  * @params {string} ref - 
   * @params {string} value - ??
+  * @returns {Monitor}
   */
-  subscribe(id, prop, value) {
-    const monitor = new Monitor(id, prop, value, this);
+  subscribe(ref, value) {
+    const monitor = new Monitor(ref, value, this);
     this.#monitors.push(monitor);
     return monitor;
   }
@@ -60,7 +60,7 @@ class Context  {
   * take all changes since the last flush, check which subscriptions are affected and calculate a computed response if required
   */
   async flush() {
-    const toEvaluate = new Set();
+    const changes = [];
     for (const monitor of this.#monitors) {
       if (monitor.affected(this.#observed)) {
          changes.push(parser.evaluate(this.#state));

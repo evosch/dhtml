@@ -8,15 +8,20 @@ class Monitor {
 
   /**
   * define a new monitor
-  * @params {any} ref - a reference to the object requesting the monitor
-  * @params {any} value - the parsable that needs to be monitored
-  * @params {Context} context - the context to obtain access to registered parsers
+  * @param {any} ref - a reference to the object requesting the monitor
+  * @param {any} value - the parsable that needs to be monitored
+  * @param {Context} context - the context to obtain access to registered parsers
   */
   constructor(ref, value, context) {
     this.#ref = ref;
     this.#deps = context.get()[PARSER].getDeps(value);
   }
 
+  /**
+  * checks if with the provided changes this monitor will be affected
+  * @param {any} changes - list of changed context paths
+  * @returns {boolean}
+  */
   affected(changes) {
     for (const dep of this.#deps) {
       if (_has(changes, dep)) {
@@ -26,6 +31,11 @@ class Monitor {
     return false;
   }
 
+  /**
+  * evaluate the monitor, by processing the provided value with the associated parser
+  * @param {object} context - the context to be used for the evaluation
+  * @returns {[string, any]} an array containing first the original reference followed by the new value
+  */
   evaluate(context) {
     const value = context[PARSER].evaluate(this.#value, context);
 

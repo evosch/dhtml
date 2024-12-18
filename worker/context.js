@@ -59,7 +59,7 @@ class Context  {
   /**
   * take all changes since the last flush, check which subscriptions are affected and calculate a computed response if required
   */
-  async flush() {
+  flush() {
     const changes = [];
     for (const monitor of this.#monitors) {
       if (monitor.affected(this.#observed)) {
@@ -69,11 +69,7 @@ class Context  {
     
     if(changes.length <= 0) { return; }
 
-    const result = await Promise.all(changes);
-    
-    self.postMessage(result);
-    
-    // TODO update stores
+    return Promise.all(changes);
   }
 }
 

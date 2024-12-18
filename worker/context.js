@@ -51,8 +51,11 @@ class Context  {
   */
   flush() {
     const changes = [];
+    const observed = structuredClone(this.#observed);
+    this.#observed = new Set();
+
     for (const monitor of this.#monitors) {
-      if (monitor.affected(this.#observed)) {
+      if (monitor.affected(observed)) {
          changes.push(parser.evaluate(this.#state));
       }
     }

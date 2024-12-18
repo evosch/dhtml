@@ -1,16 +1,12 @@
-import Parsers from './parsers.js';
+import Registry from './registry.js';
 import Context from './context.js';
-import Actions from './actions.js';
 import { _get } from './helpers.js';
 import { PARSER, ACTION } from './constants.js';
 
-const parser = new Parsers();
-const context = new Context({
-  [PARSER]: parser,
-});
-const actions = new Actions();
+const registry = new Registry();
+const context = new Context();
 
-parser.register('ld', {
+registry.register(PARSER, 'ld', {
   evalFn: (p, context) => {
     return _get(context, p._sv);
   },
@@ -20,7 +16,7 @@ parser.register('ld', {
   }
 });
 
-actions.register('sequence', {
+registry.register(ACTION, 'sequence', {
   evalFn: async ({ varName, script, start }, context) => {
     let action = script[start];
     while (action) {
@@ -35,7 +31,7 @@ actions.register('sequence', {
   },
 });
 
-actions.register('query', {
+registry.register(ACTION, 'query', {
   evalFn: async ({ variableName, request: { url: requestUrl, ...requestOptions } }, context) => {
     const requestObject = new Request(requestUrl, requestOptions);
     const response = await fetch(requestObject);
@@ -44,12 +40,13 @@ actions.register('query', {
   }
 });
 
-actions.register('submit', {
+registry.register(ACTION, 'submit', {
   evalFn: ({ variableName, formData }, context) => {
     context.update(variableName, formData);
   },
 });
-actions.register('internal.register', {
+
+registry.register(ACTION, 'internal.register', {
   evalFn: ({ id, props }, context) => {
     Object.entries(props).forEach(([k,v]) => {
       if (!v.parser) { return; }

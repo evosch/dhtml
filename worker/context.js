@@ -17,16 +17,6 @@ class Context  {
   }
   
   /**
-  * Register a new store into the context
-  * @params {string} name - the name by which the store can be accessed
-  * @params {}
-  */
-  register(name, attr) {
-    // read original store data
-    this.#state[name] = attr.getStore();
-  }
-  
-  /**
   * update the state in the context
   * @params {string[]} path - path to be updated
   * @params {unknown} update - new value

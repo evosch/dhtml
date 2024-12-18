@@ -1,7 +1,18 @@
+/**
+* Check if a value is undefined
+* @param {any} val - value to check
+* @returns {boolean}
+*/
 export function _isUndefined(val) {
   return val === undefined;
 }
 
+/**
+* get an entity from a nested object
+* @param {object} object
+* @param {string[]} path
+* @returns {any}
+*/
 export function _get(object, path) {
   let x = object;
   for (const step of path) {
@@ -13,10 +24,24 @@ export function _get(object, path) {
   return x;
 }
 
+/**
+* check if a path exists on an object
+* @param {object} object
+* @param {string[]} path
+* @returns {boolean}
+*/
 export function _has(object, path) {
   return _isUndefined(_get(object, path));
 }
 
+
+/**
+* set a nested value on an object
+* @param {object} object
+* @param {string[]} path
+* @param {any} value
+* @returns {object} returns the original object
+*/
 export function _set(object, path, value) {
   const base = path[0];
 
@@ -34,14 +59,5 @@ export function _set(object, path, value) {
   }
   
   object[base] = value;
-}
-
-export function _inflate(arr) {
-  const r = {};
-  for (const a of arr) {
-    const path = a.slice(0, -1);
-    const v = a.slice(-1);
-    _set(r, path, v);
-  }
-  return r;
+  return object;
 }

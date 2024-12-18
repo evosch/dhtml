@@ -14,7 +14,8 @@ class Monitor {
   */
   constructor(ref, value, context) {
     this.#ref = ref;
-    this.#deps = context.get()[PARSER].getDeps(value);
+    this.#value = value;
+    this.#deps = registry.getItem(PARSER, value.parser).getDeps(value);
   }
 
   /**
@@ -37,7 +38,7 @@ class Monitor {
   * @returns {[string, any]} an array containing first the original reference followed by the new value
   */
   evaluate(context) {
-    const value = context[PARSER].evaluate(this.#value, context);
+    const value = registry.getItem(PARSER, this.#value.parser).evaluate(this.#value.value, context);
 
     return [this.#ref, value];
   }

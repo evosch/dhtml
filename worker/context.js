@@ -56,7 +56,7 @@ class Context  {
 
     for (const monitor of this.#monitors) {
       if (monitor.affected(observed)) {
-         changes.push(mobitor.evaluate(this.#state));
+         changes.push(monitor.evaluate(this.#state));
       }
     }
     

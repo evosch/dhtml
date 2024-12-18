@@ -69,6 +69,7 @@ self.onmessage = async (event) => {
   await actions.evaluate(action, payload, context);
   activeProcesses--;
   if (activeProcesses === 0) {
-    context.flush();
+    const result = await context.flush();
+    self.postMessage(result);
   }
 }

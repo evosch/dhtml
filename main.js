@@ -38,11 +38,10 @@ const observer = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 observer.observe(targetNode, config);
 
-for (const type of ['out', 'in']) {
-  const elements = document.querySelectorAll(`[eo-${type}*]');
+const elements = document.querySelectorAll(`[eo-*]');
   for (const element of elements) {
     const attr = element.attributes;
-    myWorker.postMessage([type, attr]);
+    myWorker.postMessage(attr);
   }
 }
 

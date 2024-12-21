@@ -8,8 +8,13 @@
   <title>ES8 Project</title>
 </head>
 
-<body id="body" eo-get="https://swapi.dev/api/people/1/" eo-key="people">
-  <button id="1" eo-out="people.data.name">Test</button>
+<body id="body" eo-get="https://swapi.dev/api/people/" eo-key="people">
+  <button id="1" eo-out="people.data.count">Test</button>
+  <ul eo-each="people.data.results">
+  </ul>
+  <template eo-key="person" id="">
+    <li eo-out="person.name"></li>
+  </template>
   <script src="main.js" type="module"></script>
 </body>
 </html>

@@ -9,11 +9,11 @@
 </head>
 
 <body id="body" eo-get="https://swapi.dev/api/people/" eo-key="people">
-  <button id="1" eo-out="people.data.count">Test</button>
+  <button id="1" eo-text="people.data.count">Test</button>
   <ul eo-each="people.data.results">
   </ul>
   <template eo-key="person" id="">
-    <li eo-out="person.name"></li>
+    <li eo-text="person.name"></li>
   </template>
   <script src="main.js" type="module"></script>
 </body>

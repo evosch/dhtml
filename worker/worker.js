@@ -46,7 +46,7 @@ registry.register(ACTION, 'submit', {
   },
 });
 
-registry.register(ACTION, 'internal.register', {
+registry.register(ACTION, 'out', {
   evalFn: ({ id, props }, context) => {
     Object.entries(props).forEach(([k,v]) => {
       if (!v.parser) { return; }
@@ -64,6 +64,7 @@ context.register('persist', {
 
 let activeProcesses = 0;
 self.onmessage = async (event) => {
+  
   const { action, payload } = event.data;
   activeProcesses++;
   await actions.evaluate(action, payload, context);

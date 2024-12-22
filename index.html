@@ -10,9 +10,9 @@
 
 <body id="body" eo-get="https://swapi.dev/api/people/" eo-key="people">
   <button id="1" eo-text="people.data.count">Test</button>
-  <ul eo-each="people.data.results">
+  <ul eo-each="people.data.results" eo-key="people" eo-template="pl">
   </ul>
-  <template eo-key="person" id="">
+  <template id="pl">
     <li eo-text="person.name"></li>
   </template>
   <script src="main.js" type="module"></script>

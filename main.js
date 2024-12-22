@@ -40,32 +40,6 @@ observer.observe(targetNode, config);
 
 const elements = document.querySelectorAll(`[eo-*]');
   for (const element of elements) {
-    const attr = element.attributes;
-    myWorker.postMessage(attr);
+    myWorker.postMessage(element.attributes);
   }
 }
-
-/*
-myWorker.postMessage({
-  action: 'internal.register',
-  payload: {
-    id: '1',
-    props: {
-      innerText: {
-        parser: 'ld',
-        value: 'people.data.name'
-      }
-    }
-  }
-})
-
-myWorker.postMessage({
-  action: 'query',
-  payload: {
-    variableName: ['people'],
-    request: {
-      url: 'https://swapi.dev/api/people/1/'
-    }
-  }
-})
-*/
